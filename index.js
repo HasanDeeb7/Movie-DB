@@ -90,8 +90,17 @@ app.post('/movies/add?',(req,res)=>{
   }
 
 })
+app.delete('/movies/delete/:id?', (req,res)=>{
+  let id = Number(req.params.id)
+  if(id && movies.some(obj => obj.id === id)){
+    movies = movies.filter(obj =>{ return obj.id !== id})
+   res.status(203).json({status: 203, data: movies})
+  }else{
+    res.status(404).json({status:404, error:true, message: id ? `the movie with the id ${id} does not exist` : 'to delete a movie you should specify an id'})
+  }
+})
 
-const movies = [
+let movies = [
   { id: 1, title: "Jaws", year: 1975, rating: 8 },
   { id: 2, title: "Avatar", year: 2009, rating: 7.8 },
   { id: 3, title: "Brazil", year: 1985, rating: 8 },
