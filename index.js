@@ -22,3 +22,28 @@ app.get('/search', (req,res) =>{
     res.status(500).json({status:500, message: 'you should provide a search'})
   }
 })
+
+app.get('/movies/:route', (req,res)=>{
+  route = req.params.route
+  switch(route){
+    case 'create':
+      res.send({message:'create'})
+      break;
+    case 'read':
+      res.status(200).json({status:200, data: movies})
+      break;
+    case 'update':
+      res.send({message:'update'})
+      break;
+    case 'delete':
+      res.send({message:'delete'})
+      break;
+      
+  }
+})
+const movies = [
+  { title: 'Jaws', year: 1975, rating: 8 },
+  { title: 'Avatar', year: 2009, rating: 7.8 },
+  { title: 'Brazil', year: 1985, rating: 8 },
+  { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 }
+]
