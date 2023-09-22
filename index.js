@@ -19,8 +19,8 @@ app.get("/search", (req, res) => {
     res.status(200).json({ status: 200, message: "ok", data: req.query.s });
   } else {
     res
-      .status(500)
-      .json({ status: 500, message: "you should provide a search" });
+      .status(400)
+      .json({ status: 400, message: "you should provide a search" });
   }
 });
 
@@ -63,19 +63,34 @@ app.get("/movies/read/:sorted?", (req, res, next) => {
         .json({ status: 400, message: "not sorted", data: sortedMovies });
   }
 });
+
 app.get("/movies/read/id/:ID?", (req, res) => {
   let id = req.params.ID;
   if (id > 0 && id <= movies.length) {
     res.status(200).json({ status: 200, message: "ok", data: movies[id - 1] });
   } else {
-    res.status(id ? 404 : 500).json({
-      status: id ? 404 : 500,
+    res.status(id ? 404 : 400).json({
+      status: id ? 404 : 400,
       message: id
         ? `the movie with id ${id} does not exist`
         : "faild to get request, you need to set an id",
     });
   }
 });
+app.get('/movies/add?',(req,res)=>{
+  let title = req.query.title
+  let year = Number(req.query.year)
+  let rating = Number(req.query.rating)
+  newMovie = {id:movies.length + 1, title: title, year: year, rating :rating}
+  if(year && !isNaN(year) && year.toString().length === 4 && title ){
+    movies.push(newMovie)
+    res.status(200).json({status:200, data: movies})
+  }else{
+    res.status(403).json({status: 404, error: true,message: 'you cannot create a movie without providing a title and a valid year' })
+  }
+
+})
+
 const movies = [
   { id: 1, title: "Jaws", year: 1975, rating: 8 },
   { id: 2, title: "Avatar", year: 2009, rating: 7.8 },
