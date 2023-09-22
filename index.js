@@ -24,23 +24,30 @@ app.get("/search", (req, res) => {
   }
 });
 
-app.get("/movies/:route?", (req, res) => {
-  route = req.params.route || "bad reqest";
-  switch (route) {
-    case "create":
-      res.send({ message: "create" });
+
+app.get("/movies/read/:sorted?", (req, res) => {
+
+  let sorted = req.params.sorted || "bad request";
+  let sortedMovies = movies
+  switch (sorted) {
+    case "by-date":
+       sortedMovies = movies.sort((objA, objB) => {
+        return objA.year - objB.year;
+      });
+      res.status(200).json({ status: 200, message: "sorted by release date", data: sortedMovies})
       break;
-    case "read":
-      res.status(200).json({ status: 200, data: movies });
+    case "by-rating":
+       sortedMovies = movies.sort((objA,objB)=>{
+        return objA.rating - objB.rating
+      })
+      res.status(200).json({ status:200, message: "sorted by rating", data:sortedMovies });
       break;
-    case "update":
-      res.send({ message: "update" });
-      break;
-    case "delete":
-      res.send({ message: "delete" });
+    case "by-title":
+      sortedMovies = movies.sort((objA, objB) => (objA.title < objB.title)? -1 : 1)
+      res.status(200).json({status:200, message: "sorted by title", data:sortedMovies });
       break;
     default:
-      res.status(400).json({ status: 400, message: "Bad request" });
+      res.status(200).json({ status: 400, message: "not sorted", data: sortedMovies });
   }
 });
 const movies = [
@@ -49,3 +56,24 @@ const movies = [
   { title: "Brazil", year: 1985, rating: 8 },
   { title: "الإرهاب والكباب‎", year: 1992, rating: 6.2 },
 ];
+
+function sortedBy(condition) {
+  let isSorted = false;
+  let isSortedByDate = condition === "bydate" ? condition : null;
+  let isSortedByRate = condition === "byrating" ? condition : null;
+  let isSortedByTitle = condition === "bytitle" ? condition : null;
+  if (isSortedByDate) {
+    isSorted = true;
+    let sortedMovies = movies.sort((objA, objB) => {
+      objA.year - objB.year;
+    });
+    return sortedMovies;
+  } else if (isSortedByRate) {
+    let sortedMovies = movies.sort((objA, objB) => {
+      objA.rating - objB.rating;
+    });
+    return sortedMovies;
+  } else {
+    return false;
+  }
+}
