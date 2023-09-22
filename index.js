@@ -80,7 +80,7 @@ app.get("/movies/read/id/:ID?", (req, res) => {
 app.get('/movies/add?',(req,res)=>{
   let title = req.query.title
   let year = Number(req.query.year)
-  let rating = Number(req.query.rating)
+  let rating = Number(req.query.rating) || 4
   newMovie = {id:movies.length + 1, title: title, year: year, rating :rating}
   if(year && !isNaN(year) && year.toString().length === 4 && title ){
     movies.push(newMovie)
