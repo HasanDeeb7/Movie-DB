@@ -38,7 +38,8 @@ app.get('/movies/:route', (req,res)=>{
     case 'delete':
       res.send({message:'delete'})
       break;
-      
+    default:
+      res.status(400).json({status:400, message: 'Bad request'})
   }
 })
 const movies = [
