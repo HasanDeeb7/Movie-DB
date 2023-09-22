@@ -24,56 +24,61 @@ app.get("/search", (req, res) => {
   }
 });
 
-
-app.get("/movies/read/:sorted?", (req, res) => {
-
+app.get("/movies/read/:sorted?", (req, res, next) => {
+  if (req.params.sorted === "id") {
+    next();
+  }
   let sorted = req.params.sorted || "bad request";
-  let sortedMovies = movies
+  let sortedMovies = movies;
   switch (sorted) {
     case "by-date":
-       sortedMovies = movies.sort((objA, objB) => {
+      sortedMovies = movies.sort((objA, objB) => {
         return objA.year - objB.year;
       });
-      res.status(200).json({ status: 200, message: "sorted by release date", data: sortedMovies})
+      res.status(200).json({
+        status: 200,
+        message: "sorted by release date",
+        data: sortedMovies,
+      });
       break;
     case "by-rating":
-       sortedMovies = movies.sort((objA,objB)=>{
-        return objA.rating - objB.rating
-      })
-      res.status(200).json({ status:200, message: "sorted by rating", data:sortedMovies });
+      sortedMovies = movies.sort((objA, objB) => {
+        return objA.rating - objB.rating;
+      });
+      res
+        .status(200)
+        .json({ status: 200, message: "sorted by rating", data: sortedMovies });
       break;
     case "by-title":
-      sortedMovies = movies.sort((objA, objB) => (objA.title < objB.title)? -1 : 1)
-      res.status(200).json({status:200, message: "sorted by title", data:sortedMovies });
+      sortedMovies = movies.sort((objA, objB) =>
+        objA.title < objB.title ? -1 : 1
+      );
+      res
+        .status(200)
+        .json({ status: 200, message: "sorted by title", data: sortedMovies });
       break;
     default:
-      res.status(200).json({ status: 400, message: "not sorted", data: sortedMovies });
+      res
+        .status(200)
+        .json({ status: 400, message: "not sorted", data: sortedMovies });
+  }
+});
+app.get("/movies/read/id/:ID?", (req, res) => {
+  let id = req.params.ID;
+  if (id > 0 && id <= movies.length) {
+    res.status(200).json({ status: 200, message: "ok", data: movies[id - 1] });
+  } else {
+    res.status(id ? 404 : 500).json({
+      status: id ? 404 : 500,
+      message: id
+        ? `the movie with id ${id} does not exist`
+        : "faild to get request, you need to set an id",
+    });
   }
 });
 const movies = [
-  { title: "Jaws", year: 1975, rating: 8 },
-  { title: "Avatar", year: 2009, rating: 7.8 },
-  { title: "Brazil", year: 1985, rating: 8 },
-  { title: "الإرهاب والكباب‎", year: 1992, rating: 6.2 },
+  { id: 1, title: "Jaws", year: 1975, rating: 8 },
+  { id: 2, title: "Avatar", year: 2009, rating: 7.8 },
+  { id: 3, title: "Brazil", year: 1985, rating: 8 },
+  { id: 4, title: "الإرهاب والكباب", year: 1992, rating: 6.2 },
 ];
-
-function sortedBy(condition) {
-  let isSorted = false;
-  let isSortedByDate = condition === "bydate" ? condition : null;
-  let isSortedByRate = condition === "byrating" ? condition : null;
-  let isSortedByTitle = condition === "bytitle" ? condition : null;
-  if (isSortedByDate) {
-    isSorted = true;
-    let sortedMovies = movies.sort((objA, objB) => {
-      objA.year - objB.year;
-    });
-    return sortedMovies;
-  } else if (isSortedByRate) {
-    let sortedMovies = movies.sort((objA, objB) => {
-      objA.rating - objB.rating;
-    });
-    return sortedMovies;
-  } else {
-    return false;
-  }
-}
