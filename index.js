@@ -77,7 +77,7 @@ app.get("/movies/read/id/:ID?", (req, res) => {
     });
   }
 });
-app.get('/movies/add?',(req,res)=>{
+app.post('/movies/add?',(req,res)=>{
   let title = req.query.title
   let year = Number(req.query.year)
   let rating = Number(req.query.rating) || 4
