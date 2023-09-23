@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 app.listen(5000);
+app.use(express.json())
 app.get("/test", (req, res) => {
   res.send({ status: 200, message: "ok" });
 });
