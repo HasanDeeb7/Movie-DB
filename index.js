@@ -1,11 +1,11 @@
 var express = require("express");
 var app = express();
 app.listen(5000);
-
 require("dotenv").config();
+var movieID = 6
 
 const mongoose = require("mongoose");
-const MovieModel = require("./models/movie");
+const Movie = require("./models/movie");
 mongoose.set("strictQuery", false);
 const mongoDB = process.env.URL || "";
 
@@ -19,97 +19,64 @@ main().catch((err) => {
   console.log(err);
 });
 
-const Schema = mongoose.Schema;
 
-app.get("/test", (req, res) => {
-  res.send({ status: 200, message: "ok" });
-});
-app.get("/time", (req, res) => {
-  const date = new Date();
-  const hours = date.getHours();
-  const seconds = date.getSeconds();
-  res.status(200).json({ status: 200, message: `${hours} : ${seconds}` });
-});
-app.get("/hello/:id?", (req, res) => {
-  const id = req.params.id || "there";
-  res.status(200).json({ status: 200, message: `hello, ${id}` });
-});
-app.get("/search", (req, res) => {
-  if (req.query.s) {
-    res.status(200).json({ status: 200, message: "ok", data: req.query.s });
-  } else {
-    res
-      .status(400)
-      .json({ status: 400, message: "you should provide a search" });
-  }
-});
-
-app.get("/movies/read/:sorted?", (req, res, next) => {
+app.get("/movies/read/:sorted?", async (req, res, next) => {
   if (req.params.sorted === "id") {
     next();
   }
   let sorted = req.params.sorted || "bad request";
-  let sortedMovies = movies;
+  let movies = await Movie.find({});
   switch (sorted) {
     case "by-date":
-      sortedMovies = movies.sort((objA, objB) => {
-        return objA.year - objB.year;
-      });
-      res.status(200).json({
-        status: 200,
-        message: "sorted by release date",
-        data: sortedMovies,
-      });
+      movies = await Movie.find({}).sort({ year: -1 });
       break;
     case "by-rating":
-      sortedMovies = movies.sort((objA, objB) => {
-        return objA.rating - objB.rating;
-      });
-      res
-        .status(200)
-        .json({ status: 200, message: "sorted by rating", data: sortedMovies });
+      movies = await Movie.find().sort({ rating: -1 });
       break;
     case "by-title":
-      sortedMovies = movies.sort((objA, objB) =>
-        objA.title < objB.title ? -1 : 1
-      );
-      res
-        .status(200)
-        .json({ status: 200, message: "sorted by title", data: sortedMovies });
+      movies = await Movie.find().sort({ title: 1 });
       break;
     default:
-      res
-        .status(200)
-        .json({ status: 400, message: "not sorted", data: sortedMovies });
+      movies;
   }
+  res.status(200).json({ status: 400, data: movies });
 });
 
-app.get("/movies/read/id/:ID?", (req, res) => {
-  let id = req.params.ID;
-  if (id > 0 && id <= movies.length) {
-    res.status(200).json({ status: 200, message: "ok", data: movies[id - 1] });
+app.get("/movies/read/id/:ID?", async (req, res) => {
+  let id = Number(req.params.ID);
+  let movies = await Movie.find({ _id: id });
+  if (movies.length > 0) {
+    res.status(200).json({ status: 200, message: "ok", data: movies });
   } else {
     res.status(id ? 404 : 400).json({
       status: id ? 404 : 400,
-      message: id
-        ? `the movie with id ${id} does not exist`
-        : "faild to get request, you need to set an id",
+      message:
+        id || id >= 0
+          ? `the movie with id ${id} does not exist`
+          : "faild to get request, you need to set an id",
     });
   }
 });
-app.post("/movies/add?", (req, res) => {
+
+app.post("/movies/add?", async (req, res) => {
+  let newMovie;
+
   let title = req.query.title;
   let year = Number(req.query.year);
   let rating = Number(req.query.rating) || 4;
-  newMovie = {
-    id: movies.length + 1,
+  movieID+=1
+   newMovie = {
+    _id: movieID,
     title: title,
     year: year,
-    rating: rating,
+    rating: rating
   };
   if (year && !isNaN(year) && year.toString().length === 4 && title) {
-    movies.push(newMovie);
-    res.status(200).json({ status: 200, data: movies });
+
+      const instance = new Movie(newMovie)
+      await instance.save()
+      res.status(200).json({status:200, data: await Movie.find()})
+    
   } else {
     res.status(403).json({
       status: 404,
