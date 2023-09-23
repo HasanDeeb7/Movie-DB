@@ -77,29 +77,77 @@ app.get("/movies/read/id/:ID?", (req, res) => {
     });
   }
 });
-app.post('/movies/add?',(req,res)=>{
-  let title = req.query.title
-  let year = Number(req.query.year)
-  let rating = Number(req.query.rating) || 4
-  newMovie = {id:movies.length + 1, title: title, year: year, rating :rating}
-  if(year && !isNaN(year) && year.toString().length === 4 && title ){
-    movies.push(newMovie)
-    res.status(200).json({status:200, data: movies})
-  }else{
-    res.status(403).json({status: 404, error: true,message: 'you cannot create a movie without providing a title and a valid year' })
+app.post("/movies/add?", (req, res) => {
+  let title = req.query.title;
+  let year = Number(req.query.year);
+  let rating = Number(req.query.rating) || 4;
+  newMovie = {
+    id: movies.length + 1,
+    title: title,
+    year: year,
+    rating: rating,
+  };
+  if (year && !isNaN(year) && year.toString().length === 4 && title) {
+    movies.push(newMovie);
+    res.status(200).json({ status: 200, data: movies });
+  } else {
+    res
+      .status(403)
+      .json({
+        status: 404,
+        error: true,
+        message:
+          "you cannot create a movie without providing a title and a valid year",
+      });
   }
-
-})
-app.delete('/movies/delete/:id?', (req,res)=>{
-  let id = Number(req.params.id)
-  if(id && movies.some(obj => obj.id === id)){
-    movies = movies.filter(obj =>{ return obj.id !== id})
-   res.status(203).json({status: 203, data: movies})
-  }else{
-    res.status(404).json({status:404, error:true, message: id ? `the movie with the id ${id} does not exist` : 'to delete a movie you should specify an id'})
+});
+app.delete("/movies/delete/:id?", (req, res) => {
+  let id = Number(req.params.id);
+  if (id && movies.some((obj) => obj.id === id)) {
+    movies = movies.filter((obj) => {
+      return obj.id !== id;
+    });
+    res.status(203).json({ status: 203, data: movies });
+  } else {
+    res
+      .status(404)
+      .json({
+        status: 404,
+        error: true,
+        message: id
+          ? `the movie with the id ${id} does not exist`
+          : "to delete a movie you should specify an id",
+      });
   }
-})
-
+});
+app.patch("/movies/update/:id?", (req, res) => {
+  let id = Number(req.params.id);
+  
+  if (id && movies.some( obj => obj.id === id)) {
+    let target = movies[id - 1];
+    let newTitle = req.query.title;
+    let newYear = !isNaN(Number(req.query.year)) ? Number(req.query.year) : target.year ;
+    let newRating = !isNaN(Number(req.query.rating)) ? Number(req.query.rating) : target.rating;
+    let updatedMovie = {
+      id: id,
+      title: newTitle ? newTitle : target.title,
+      year: newYear ? newYear : target.year,
+      rating: newRating ? newRating : target.rating,
+    };
+    movies = movies.map((obj) => {
+      if (obj.id === id) {
+        return obj = updatedMovie;
+      }
+      return obj
+    });
+    
+    res.status(203).json({ status: 203, data: movies });
+  } else {
+    res
+      .status(404)
+      .json({ status: 404, error: true, message: "id not found!" });
+  }
+});
 let movies = [
   { id: 1, title: "Jaws", year: 1975, rating: 8 },
   { id: 2, title: "Avatar", year: 2009, rating: 7.8 },
