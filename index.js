@@ -100,13 +100,11 @@ app.post("/movies/add?", async (req, res) => {
   }
 });
 
-app.delete("/movies/delete/:id?", (req, res) => {
+app.delete("/movies/delete/:id?", async (req, res) => {
   let id = Number(req.params.id);
-  if (id && movies.some((obj) => obj.id === id)) {
-    movies = movies.filter((obj) => {
-      return obj.id !== id;
-    });
-    res.status(203).json({ status: 203, data: movies });
+  if (id && await Movie.findOne({_id : id})) {
+    await Movie.deleteOne({_id: id})
+    res.status(203).json({ status: 203, data: await Movie.find() });
   } else {
     res.status(404).json({
       status: 404,
@@ -117,11 +115,12 @@ app.delete("/movies/delete/:id?", (req, res) => {
     });
   }
 });
-app.patch("/movies/update/:id?", (req, res) => {
+
+app.patch("/movies/update/:id?", async (req, res) => {
   let id = Number(req.params.id);
 
-  if (id && movies.some((obj) => obj.id === id)) {
-    let target = movies[id - 1];
+  if (id && await Movie.findOne({_id: id})) {
+    let target = await Movie.findOne({_id: id})
     let newTitle = req.query.title;
     let newYear = !isNaN(Number(req.query.year))
       ? Number(req.query.year)
@@ -135,14 +134,9 @@ app.patch("/movies/update/:id?", (req, res) => {
       year: newYear ? newYear : target.year,
       rating: newRating ? newRating : target.rating,
     };
-    movies = movies.map((obj) => {
-      if (obj.id === id) {
-        return (obj = updatedMovie);
-      }
-      return obj;
-    });
+    await Movie.replaceOne({_id: id}, updatedMovie)
 
-    res.status(203).json({ status: 203, data: movies });
+    res.status(203).json({ status: 203, data: await Movie.find() });
   } else {
     res
       .status(404)
