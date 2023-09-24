@@ -2,11 +2,24 @@ var express = require("express");
 var app = express();
 app.listen(5000);
 require("dotenv").config();
-var movieID = 6
+
 
 const mongoose = require("mongoose");
-const Movie = require("./models/movie");
-mongoose.set("strictQuery", false);
+const {Movie, Counter} = require("./models/movie");
+
+const MovieId = async() =>{
+  const isCounter = await Counter.findOne()
+  if(isCounter){
+    const counterIdDoc = await Counter.findOneAndUpdate({},{$inc :{count: 1}}, {upsert:true})
+    return counterIdDoc.count
+  }else{
+    const newCounter = new Counter({count: 11})
+    await newCounter.save()
+    return newCounter.count
+  }
+
+}
+mongoose.set("strictQuery", false); 
 const mongoDB = process.env.URL || "";
 
 const main = async () => {
@@ -31,7 +44,7 @@ app.get("/movies/read/:sorted?", async (req, res, next) => {
       movies = await Movie.find({}).sort({ year: -1 });
       break;
     case "by-rating":
-      movies = await Movie.find().sort({ rating: -1 });
+      movies = await Movie.find().sort({ rating: -1 }); 
       break;
     case "by-title":
       movies = await Movie.find().sort({ title: 1 });
@@ -64,9 +77,9 @@ app.post("/movies/add?", async (req, res) => {
   let title = req.query.title;
   let year = Number(req.query.year);
   let rating = Number(req.query.rating) || 4;
-  movieID+=1
+  
    newMovie = {
-    _id: movieID,
+    _id: await MovieId(),
     title: title,
     year: year,
     rating: rating
@@ -86,6 +99,7 @@ app.post("/movies/add?", async (req, res) => {
     });
   }
 });
+
 app.delete("/movies/delete/:id?", (req, res) => {
   let id = Number(req.params.id);
   if (id && movies.some((obj) => obj.id === id)) {
