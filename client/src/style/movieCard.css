@@ -1,12 +1,12 @@
-.gold{
+.gold {
   color: var(--highlight-clr);
 }
-.star{
+.star {
   font-size: 13px;
   margin: 0 auto;
 }
 .movie {
-  /* background-color: black; */
+  position: relative;
   width: fit-content;
   display: flex;
   flex-direction: column;
@@ -26,8 +26,17 @@
   align-items: center;
   gap: 1rem;
 }
-.rating{
+.rating {
   display: flex;
   gap: 4px;
   align-items: center;
+}
+.update-btn {
+  background-color: var(--highlight-clr);
+  color: black;
+  margin: 1rem 0;
+}
+.delete-btn {
+  background-color: darkred;
+  margin: 1rem 0;
 }

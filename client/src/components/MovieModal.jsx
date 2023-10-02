@@ -1,35 +1,46 @@
 import { useState } from "react";
 import "../style/MovieModal.css";
 import axios from "axios";
+import { addMovie, updateMovie } from "../utils/Helper";
 
 export const MovieModal = (props) => {
+  const target = props.isModalOpen.target;
   const [title, setTitle] = useState(props.title || "");
-  const [year, setYear] = useState(props.year || '')
-  const [rating, setRating] = useState(
-    props.rating || ''
-  );
+  const [year, setYear] = useState(props.year || "");
+  const [rating, setRating] = useState(props.rating || "");
 
-  function closeModal(e) {
-    e.preventDefault();
-    props.setIsModalOpen(false);
+  let action = {};
+  const modalType = props.isModalOpen.type;
+  switch (modalType) {
+    case "add":
+      action = "Add Movie";
+      break;
+    case "update":
+      action = "Update Movie";
+      break;
+    default:
+      action = "Submit";
   }
+
+  function closeModal() {
+    props.setIsModalOpen({ state: false, type: modalType, target: target });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    addData(title, year, rating);
-    props.fetchData()
-  }
-  async function addData(title, year, rating) {
-    try {
-      await axios.post(
-        `http://localhost:5000/movies/add?title=${title}&year=${year || new Date().getFullYear()}&rating=${rating || 5}`
-      );
-    } catch (err) {
-      console.log(err);
+    if (modalType === "add") {
+      addMovie(title, year, rating, props.fetchData);
+      closeModal();
+    } else if (modalType === "update") {
+      updateMovie(target, title, year, rating, props.fetchData);
+      closeModal();
     }
   }
+
   return (
     <section id="modal-form">
       <form onSubmit={handleSubmit}>
+        <h3>{action}</h3>
         <section className="input-container">
           <input
             className="input"
@@ -67,10 +78,12 @@ export const MovieModal = (props) => {
           />
         </section>
         <section className="btn-container">
-          <button className="cancel-btn" onClick={closeModal}>
+          <button type="button" className="cancel-btn" onClick={closeModal}>
             Cancel
           </button>
-          <button className="submit-btn" onClick={closeModal}>Add Movie</button>
+          <button type="submit" className="submit-btn" onClick={handleSubmit}>
+            {action}
+          </button>
         </section>
       </form>
     </section>

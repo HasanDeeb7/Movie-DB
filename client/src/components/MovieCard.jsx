@@ -1,7 +1,15 @@
 import "../style/movieCard.css";
 import Wick from "../assets/John Wick.jpg";
+import { deleteMovie } from "../utils/Helper";
 export const Movie = (props) => {
-  const { title, year, rating, img } = props;
+  const { title, year, rating } = props;
+  function handleUpdate() {
+    props.setIsModalOpen({ state: true, type: "update", target: props.id });
+  }
+  function handleDelete(){
+    props.fetchData()
+    deleteMovie(props.id)
+  }
   return (
     <section className="movie">
       <figure>
@@ -14,7 +22,14 @@ export const Movie = (props) => {
           {rating} <span className="star">⭐</span>
         </p>
       </section>
-      <button className="update-btn">Update </button>
+      <section className="btn-container">
+        <button className="delete-btn" onClick={handleDelete}>
+          Delete
+        </button>
+        <button className="update-btn" onClick={() => handleUpdate()}>
+          Update
+        </button>
+      </section>
     </section>
   );
 };
