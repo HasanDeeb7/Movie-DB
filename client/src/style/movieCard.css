@@ -1,0 +1,33 @@
+.gold{
+  color: var(--highlight-clr);
+}
+.star{
+  font-size: 13px;
+  margin: 0 auto;
+}
+.movie {
+  /* background-color: black; */
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-clr);
+  margin-bottom: 2rem;
+}
+
+.movie > figure > img {
+  width: 10rem;
+  height: 15rem;
+}
+#details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.rating{
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
