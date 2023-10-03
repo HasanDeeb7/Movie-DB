@@ -1,4 +1,4 @@
-.gold {
+/* .gold {
   color: var(--highlight-clr);
 }
 .star {
@@ -8,18 +8,16 @@
 .movie {
   position: relative;
   width: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-color: var(--secondary-clr);
   margin-bottom: 2rem;
+  height: ;
 }
 
 .movie > figure > img {
   width: 10rem;
   height: 15rem;
 }
+
 #details-container {
   display: flex;
   flex-direction: column;
@@ -31,12 +29,4 @@
   gap: 4px;
   align-items: center;
 }
-.update-btn {
-  background-color: var(--highlight-clr);
-  color: black;
-  margin: 1rem 0;
-}
-.delete-btn {
-  background-color: darkred;
-  margin: 1rem 0;
-}
+

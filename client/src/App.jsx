@@ -1,24 +1,36 @@
 import { useEffect, useState } from "react";
-import dotenv from "dotenv";
 import "./App.css";
 import Logo from "./assets/Logo.svg";
-import Poster from "./assets/John Wick.jpg";
 import axios from "axios";
 import { Movie } from "./components/MovieCard";
 import { MovieModal } from "./components/MovieModal";
+import { Sort } from "./components/Sort";
+import { Oval } from "react-loader-spinner";
+import { Edit } from "./components/Edit";
 
 // dotenv.config();
 function App() {
   const [data, setData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState({ state: false, type: "add", taget: null });
+  const [isModalOpen, setIsModalOpen] = useState({
+    state: false,
+    type: "add",
+    taget: null,
+  });
+  const [sort, setSort] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchData() {
+    setIsLoading(true);
+    console.log("fetch");
     try {
-      let response = await axios.get(`http://localhost:5000/movies/read`);
+      let response = await axios.get(
+        `http://localhost:5000/movies/read/${sort}`
+      );
       if (response.status === 200) {
         setData(response.data.data);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
@@ -26,7 +38,7 @@ function App() {
   }
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [sort]);
 
   return (
     <div id="wrapper">
@@ -34,53 +46,69 @@ function App() {
         <MovieModal
           setIsModalOpen={setIsModalOpen}
           isModalOpen={isModalOpen}
-          data={data}
-          setData={setData}
+          setIsLoading={setIsLoading}
           fetchData={() => {
             fetchData();
           }}
         />
       )}
       <header>
-        <figure>
-          <img src={Logo} alt="Logo" />
-        </figure>
-        <nav>
-          <ul className="nav-links">
-            <a href="#">Explore</a>
-            <a href="#">Movies</a>
-            <a href="#">Series</a>
-            <a
-              href="#"
-              onClick={() => setIsModalOpen({ state: true, type: "add" })}
-            >
-              Add Movie
-            </a>
-          </ul>
-        </nav>
+        <div className="head-wrapper">
+          <figure>
+            <img src={Logo} alt="Logo" />
+          </figure>
+          <nav>
+            <ul className="nav-links">
+              <a href="#">Explore</a>
+              <a href="#">Movies</a>
+              <a href="#">Series</a>
+              <a
+                href="#"
+                onClick={() => setIsModalOpen({ state: true, type: "add" })}
+              >
+                Add Movie
+              </a>
+            </ul>
+          </nav>
+        </div>
       </header>
       <main>
-        {isLoading ? (
-          <h1>Loading</h1>
-        ) : (
-          <section id="movies-container">
-            {data.map((movie, idx) => {
-              return (
-                <Movie
-                  key={movie._id}
-                  id={movie._id}
-                  idx={idx}
-                  title={movie.title}
-                  year={movie.year}
-                  rating={movie.rating}
-                  img={movie.img}
-                  setIsModalOpen={setIsModalOpen}
-                  fetchData={fetchData}
+        <section id="movies-container">
+          <Sort setSort={setSort}/>
+          <Edit/>
+          {isLoading ? (
+            <span className="loading-container">
+              <Oval
+                ariaLabel="loading-indicator"
+                height={100}
+                width={100}
+                strokeWidth={2000}
+                strokeWidthSecondary={2030}
+                color="var(--highlight-clr)"
+                secondaryColor="var(--secondary-clr)"
                 />
+            </span>
+          ) : (
+            data.map((movie, idx) => {
+              return (
+                <>
+                  <Movie
+                    key={movie._id}
+                    id={movie._id}
+                    title={movie.title}
+                    year={movie.year}
+                    rating={movie.rating}
+                    description = {movie.description}
+                    setIsModalOpen={setIsModalOpen}
+                    fetchData={() => {
+                      fetchData();
+                    }}
+                    />
+                </>
               );
-            })}
-          </section>
-        )}
+            })
+            )}
+            </section>
       </main>
     </div>
   );

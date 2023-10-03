@@ -8,6 +8,7 @@ export const MovieModal = (props) => {
   const [title, setTitle] = useState(props.title || "");
   const [year, setYear] = useState(props.year || "");
   const [rating, setRating] = useState(props.rating || "");
+  const [description, setDescription] = useState(props.description || "");
 
   let action = {};
   const modalType = props.isModalOpen.type;
@@ -28,11 +29,12 @@ export const MovieModal = (props) => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    props.setIsLoading(true);
     if (modalType === "add") {
-      addMovie(title, year, rating, props.fetchData);
+      addMovie(title, year, rating, description, props.fetchData);
       closeModal();
     } else if (modalType === "update") {
-      updateMovie(target, title, year, rating, props.fetchData);
+      updateMovie(target, title, year, rating, description, props.fetchData);
       closeModal();
     }
   }
@@ -74,6 +76,16 @@ export const MovieModal = (props) => {
             value={rating}
             onChange={(e) => {
               setRating(e.target.value);
+            }}
+          />
+          <input
+            className="input"
+            name="description"
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
             }}
           />
         </section>

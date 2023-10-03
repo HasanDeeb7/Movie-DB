@@ -28,7 +28,7 @@ exports.read_byId = async (req, res) => {
   if (id) {
     try {
       let movies = await Movie.findById(id);
-      res.json({message: "ok", data: movies });
+      res.json({ message: "ok", data: movies });
     } catch (err) {
       res.status(404).json({
         message: `the movie with id ${id} does not exist`,
@@ -43,20 +43,26 @@ exports.read_byId = async (req, res) => {
 
 exports.add = async (req, res) => {
   let newMovie;
-  let title = req.query.title;
-  let year = Number(req.query.year);
-  let rating = Number(req.query.rating) || 4;
+  const {
+    title,
+    year = 2023,
+    rating = 4,
+    description = "This is a description",
+  } = req.body;
+  console.log(req.body);
 
   newMovie = {
     title: title,
     year: year,
     rating: rating,
+    description: description,
   };
   if (year && !isNaN(year) && year.toString().length === 4 && title) {
     const instance = new Movie(newMovie);
     await instance.save();
     res.status(200).json({ status: 200, data: await Movie.find() });
   } else {
+    console.log(title, year);
     res.status(403).json({
       status: 404,
       error: true,
@@ -99,18 +105,19 @@ exports.update = async (req, res) => {
         .json({ status: 404, error: true, message: "Movie is Not Found!" });
     }
     let target = await Movie.findById(id);
-    let newTitle = req.query.title;
-    let newYear = !isNaN(Number(req.query.year))
-      ? Number(req.query.year)
-      : target.year;
-    let newRating = !isNaN(Number(req.query.rating))
-      ? Number(req.query.rating)
-      : target.rating;
+    const {
+      title,
+      year = Number(req.body.year) || target.year,
+      rating = Number(req.body.rating) || target.rating,
+      description
+    } = req.body;
+    console.log(description)
     let updatedMovie = {
       id: id,
-      title: newTitle ? newTitle : target.title,
-      year: newYear ? newYear : target.year,
-      rating: newRating ? newRating : target.rating,
+      title: title ? title : target.title,
+      year: year ? year : target.year,
+      rating: rating ? rating : target.rating,
+      description : description ? description : target.description
     };
     await Movie.replaceOne({ _id: id }, updatedMovie);
 
