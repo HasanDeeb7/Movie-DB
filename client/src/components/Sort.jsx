@@ -12,9 +12,9 @@ export const Sort = (props) =>{
 
     return(
         <section className="sort-container">
-            <span onClick={(e)=> handleSort(e)} id="by-title" className="sort-item">Title</span>
-            <span onClick={(e)=> handleSort(e)} id="by-year" className="sort-item">Year</span>
-            <span onClick={(e)=> handleSort(e)} id="by-rating" className="sort-item">Rating</span>
+            <span onClick={handleSort} id="by-title" className="sort-item">Title</span>
+            <span onClick={handleSort} id="by-date" className="sort-item">Year</span>
+            <span onClick={handleSort} id="by-rating" className="sort-item">Rating</span>
         </section>
     )
 }

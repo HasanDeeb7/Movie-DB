@@ -1,20 +1,27 @@
-import "../style/movieCard.css";
-import "../style/card-hover.css";
-import Wick from "../assets/John Wick.jpg";
-import { deleteMovie, displayBtn } from "../utils/Helper";
+import "../style/MovieCard.css";
+import { arrayBufferToBase64, deleteMovie, displayBtn } from "../utils/Helper";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Movie = (props) => {
-  const { title, year, rating, description } = props;
+  const { _id, title, year, rating, description, genre } = props.data;
   const [isBtnShown, setIsBtnShown] = useState(false);
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (props.data.image) {
+      const binaryImage = props.data.image.data.data;
+      const base64String = arrayBufferToBase64(binaryImage);
+      setImage(`data:image/jpeg;base64,${base64String}`);
+    }
+  }, [image]);
 
   function handleUpdate() {
-    props.setIsModalOpen({ state: true, type: "update", target: props.id });
+    props.setIsModalOpen({ state: true, type: "update", target: _id, movie: props.data, image: image});
   }
-  function handleDelete() {
-    console.log("deleteFunction");
-    deleteMovie(props.id);
+  async function handleDelete() {
+    props.setIsLoading(true)
+    await deleteMovie(_id);
     props.fetchData();
   }
   return (
@@ -28,23 +35,31 @@ export const Movie = (props) => {
       }}
     >
       <figure>
-        <img src={Wick} alt={title}></img>
+        <img
+          src={
+            image
+              ? image
+              : "https://entiretools.com/placeholder/400x600/c0c0c0/ffd700/movie/jpeg"
+          }
+          alt={title}
+        ></img>
       </figure>
       <section id="details-container">
-        <h1 className="title">{title}</h1>
+        <section id="header-container">
+          <h1 className="title">{title}</h1>
+          <p>{genre.sort().join(" | ")}</p>
+        </section>
         <section className="details">
           <p className="year">{year}</p>
           <p className="rating gold">
             {rating} <span className="star">⭐</span>
           </p>
         </section>
-        <article className="description">
-          {description}
-        </article>
+        <article className="description">{description}</article>
       </section>
       <section className={`card-btn-container ${isBtnShown ? "" : ""}`}>
         <BiTrash className="delete-btn icon" onClick={handleDelete} />
-        <BiEdit className="update-btn icon" onClick={() => handleUpdate()} />
+        <BiEdit className="update-btn icon" onClick={handleUpdate} />
       </section>
     </section>
   );

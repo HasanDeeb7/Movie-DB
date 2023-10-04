@@ -1,6 +1,6 @@
 #modal-form {
   position: fixed;
-  z-index: 1;
+  z-index: 1001;
   width: 100%;
   height: 100vh;
   top: 0;
@@ -13,45 +13,74 @@
 #modal-form > form {
   background-color: var(--bg-clr);
   border-radius: 20px;
-  padding: 3rem;
+  padding: 3rem 0;
   display: flex;
   flex-direction: column;
   width: 30%;
   gap: 3rem;
   align-items: center;
 }
-.input{
-    color: black;
-    padding: .5rem;
-    border-radius: 20px;
-    border: 1px solid var(--border-clr);
+.input-container {
+  width: 60%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
-.btn-container{
-    display: flex;
-    gap: 1rem;
+.input {
+  color: black;
+  padding: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-clr);
+  width: 100%;
 }
-button{
-    border-radius: 20px;
-    padding: .5rem;
-    cursor: pointer;
-    border: none;
+.input:focus {
+  outline-color: var(--highlight-clr);
 }
-button:active{
-    border: none;
+.textarea {
+  height: 100px;
 }
-.cancel-btn{
-    color: #000;
-    border-bottom: 3px solid var(--highlight-clr);
+.btn-container {
+  display: flex;
+  gap: 1rem;
 }
-.cancel-btn:hover{
-    background-color: #a5a5a5;
+button {
+  border-radius: 20px;
+  padding: 0.5rem;
+  cursor: pointer;
+  border: none;
 }
-.submit-btn{
-    background-color: var(--highlight-clr);
-    color: var(--bg-clr);
-    border-bottom: 3px solid #fff;
-
+button:active {
+  border: none;
 }
-.submit-btn:hover{
-    background-color: var(--hover-clr);
+.cancel-btn {
+  color: #000;
+  border-bottom: 3px solid var(--highlight-clr);
+}
+.cancel-btn:hover {
+  background-color: #a5a5a5;
+}
+.submit-btn {
+  background-color: var(--highlight-clr);
+  color: var(--bg-clr);
+  border-bottom: 3px solid #fff;
+}
+.submit-btn:hover {
+  background-color: var(--hover-clr);
+}
+.image-input-container {
+  display: flex;
+  justify-content: center;
+}
+.file-input {
+  width: 60%;
+}
+#genres-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 60%;
+  gap: 2rem;
+  justify-content: center;
+}
+.genre > label > input {
+  border-radius: 50%;
 }

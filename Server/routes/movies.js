@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const multer = require('multer')
+const storage = multer.memoryStorage()
+const upload = multer({storage})
 require("dotenv").config();
 
 const moviesController = require('../controllers/MovieControllers')
@@ -21,10 +24,10 @@ router.get("/read/:sorted?", moviesController.read);
 
 router.get("/read/id/:ID?", moviesController.read_byId);
 
-router.post("/add?", moviesController.add);
+router.post("/add?", upload.single('image'),moviesController.add);
 
 router.delete("/delete/:id?", moviesController.delete);
 
-router.patch("/update/:id?", moviesController.update);
+router.patch("/update/:id?",upload.single('image'), moviesController.update);
 
 module.exports = router;

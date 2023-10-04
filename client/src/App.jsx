@@ -8,7 +8,6 @@ import { Sort } from "./components/Sort";
 import { Oval } from "react-loader-spinner";
 import { Edit } from "./components/Edit";
 
-// dotenv.config();
 function App() {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState({
@@ -21,16 +20,13 @@ function App() {
 
   async function fetchData() {
     setIsLoading(true);
-    console.log("fetch");
     try {
       let response = await axios.get(
         `http://localhost:5000/movies/read/${sort}`
       );
       if (response.status === 200) {
         setData(response.data.data);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -74,8 +70,8 @@ function App() {
       </header>
       <main>
         <section id="movies-container">
-          <Sort setSort={setSort}/>
-          <Edit/>
+          <Sort setSort={setSort} />
+          <Edit />
           {isLoading ? (
             <span className="loading-container">
               <Oval
@@ -86,29 +82,26 @@ function App() {
                 strokeWidthSecondary={2030}
                 color="var(--highlight-clr)"
                 secondaryColor="var(--secondary-clr)"
-                />
+              />
             </span>
           ) : (
             data.map((movie, idx) => {
               return (
                 <>
                   <Movie
-                    key={movie._id}
-                    id={movie._id}
-                    title={movie.title}
-                    year={movie.year}
-                    rating={movie.rating}
-                    description = {movie.description}
+                    key={idx}
+                    data={movie}
                     setIsModalOpen={setIsModalOpen}
+                    setIsLoading={setIsLoading}
                     fetchData={() => {
                       fetchData();
                     }}
-                    />
+                  />
                 </>
               );
             })
-            )}
-            </section>
+          )}
+        </section>
       </main>
     </div>
   );

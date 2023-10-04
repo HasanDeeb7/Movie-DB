@@ -47,22 +47,24 @@ exports.add = async (req, res) => {
     title,
     year = 2023,
     rating = 4,
+    genre = [],
     description = "This is a description",
   } = req.body;
-  console.log(req.body);
+  const image = { data: req.file.buffer, contentType: req.file.mimetype };
 
   newMovie = {
     title: title,
     year: year,
     rating: rating,
     description: description,
+    genre: genre,
+    image: image,
   };
   if (year && !isNaN(year) && year.toString().length === 4 && title) {
     const instance = new Movie(newMovie);
     await instance.save();
     res.status(200).json({ status: 200, data: await Movie.find() });
   } else {
-    console.log(title, year);
     res.status(403).json({
       status: 404,
       error: true,
@@ -109,15 +111,18 @@ exports.update = async (req, res) => {
       title,
       year = Number(req.body.year) || target.year,
       rating = Number(req.body.rating) || target.rating,
-      description
+      description,
+      genre,
     } = req.body;
-    console.log(description)
+    const image = { data: req.file.buffer, contentType: req.file.mimetype };
     let updatedMovie = {
       id: id,
       title: title ? title : target.title,
       year: year ? year : target.year,
       rating: rating ? rating : target.rating,
-      description : description ? description : target.description
+      description: description ? description : target.description,
+      genre: genre ? genre : target.genre,
+      image: image ? image : target.image,
     };
     await Movie.replaceOne({ _id: id }, updatedMovie);
 
