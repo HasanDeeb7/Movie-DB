@@ -76,7 +76,7 @@ export function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function base64ToArrayBuffer(base64) {
+export function base64ToArrayBuffer(base64) {
   const binaryString = atob(base64);
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
@@ -87,3 +87,14 @@ function base64ToArrayBuffer(base64) {
 
   return bytes.buffer;
 }
+export function EditMode() {
+  const elements = document.querySelectorAll(".movie");
+  elements.forEach((element) => {
+      if (element.classList.contains('hover')){
+          element.classList.remove('hover', 'hidden')
+        }else{
+          element.classList.add("hover", "hidden");
+        }
+        
+      });
+    }

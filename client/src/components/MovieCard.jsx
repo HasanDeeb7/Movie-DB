@@ -1,5 +1,5 @@
 import "../style/MovieCard.css";
-import { arrayBufferToBase64, deleteMovie, displayBtn } from "../utils/Helper";
+import { arrayBufferToBase64, deleteMovie} from "../utils/Helper";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { useState, useEffect } from "react";
 

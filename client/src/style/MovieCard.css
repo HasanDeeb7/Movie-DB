@@ -1,107 +1,107 @@
-.movie{
-    flex: 1;
-    flex-basis: 300px;
-    flex-grow: 0;
-    height: 440px;
-    background: var(--border-clr);
-    border: 2px solid var(--border-clr);
-    box-shadow: 0px 4px 7px rgba(0,0,0,.5);
-    cursor: pointer;
-    transition: all .5s cubic-bezier(.8,.5,.2,1.4);
-    position: relative;
-    margin-bottom: 2rem;
-      margin-top:2rem ;
+.movie {
+  width: 300px;
+  flex-grow: 0;
+  height: 440px;
+  background: var(--border-clr);
+  border: 2px solid var(--border-clr);
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s cubic-bezier(0.8, 0.5, 0.2, 1.4);
+  position: relative;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  cursor: default;
+}
+.hidden {
+  overflow: hidden;
+}
 
+.movie > figure > img {
+  width: 100%;
+  height: 437px;
+  transition: all 0.5s cubic-bezier(0.8, 0.5, 0.2, 1.4);
 }
-.hidden{overflow: hidden;}
-
-.movie > figure > img{
-    width: 100%;
-    height:437px;
-    transition: all .5s cubic-bezier(.8,.5,.2,1.4);
+#details-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: var(--low-opacity-clr);
+  width: 100%;
+  height: 100%;
+  transition: all 0.7s ease-in-out;
+  padding: 20px;
+  box-sizing: border-box;
+  clip-path: circle(0% at 100% 100%);
 }
-#details-container{
-    position: absolute;
-    top:0px;
-    left:0px;
-    background-color: var(--low-opacity-clr);
-    width:100%;
-    height:100%;
-    transition: all .7s ease-in-out;
-    padding: 20px;
-    box-sizing: border-box;
-    clip-path: circle(0% at 100% 100%);
+#header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
 }
-#header-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1rem;
+.details {
+  display: flex;
+  justify-content: space-between;
 }
-.details{
-    display: flex;
-    justify-content: space-between;
+.hover:hover #details-container {
+  left: 0px;
+  transition: all 0.5s ease-in-out;
+  clip-path: circle(75%);
 }
-.hover:hover #details-container{
-    left:0px;
-    transition: all .5s ease-in-out;
-    clip-path: circle(75%);
+.hover:hover {
+  transition: all 0.5s cubic-bezier(0.8, 0.5, 0.2, 1.4);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+  transform: scale(0.97);
 }
-.hover:hover{
-    transition: all .5s cubic-bezier(.8,.5,.2,1.4);
-    box-shadow: 0px 2px 3px rgba(0,0,0,.3);
-    transform: scale(.97);
+.hover:hover img {
+  transition: all 0.5s cubic-bezier(0.8, 0.5, 0.2, 1.4);
+  transform: scale(1.6) rotate(20deg);
+  filter: blur(3px);
 }
-.hover:hover img{
-    transition: all .5s cubic-bezier(.8,.5,.2,1.4);
-    transform: scale(1.6) rotate(20deg);
-    filter: blur(3px);
+.movie h1 {
+  color: var(--highlight-clr);
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-align: center;
 }
-.movie h1{
-    color: var(--highlight-clr);
-    letter-spacing: 1px;
-    margin-bottom:1rem ;
-    text-align: center;
+.movie .description {
+  margin: 1rem 0;
+  line-height: 24px;
+  height: 70%;
 }
-.movie .description{
-    margin: 1rem 0;
-    line-height: 24px;
-     height: 70%; 
+.movie button {
+  width: fit-content;
+  height: 40px;
+  cursor: pointer;
+  border-style: none;
+  background-color: #ff3838;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease-in-out;
 }
-.movie button{
-    width: fit-content;
-    height: 40px;
-    cursor: pointer;
-    border-style: none;
-    background-color: #ff3838;
-    color:#fff;
-    font-size: 15px;
-    outline: none;
-    box-shadow: 0px 2px 3px rgba(0,0,0,.4);
-    transition: all .5s ease-in-out;
-}
-.movie button:hover{
-    transform: scale(.95) translateX(-5px);
-    transition: all .5s ease-in-out;
+.movie button:hover {
+  transform: scale(0.95) translateX(-5px);
+  transition: all 0.5s ease-in-out;
 }
 .card-btn-container {
-       width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 1rem 0;
-    position: absolute;
-    z-index: 9;
-    top: -45px;
-  }
-  .icon {
-    cursor: pointer;
-  }
-  .update-btn {
-    fill: var(--highlight-clr);
-    font-size: 25px;
-  }
-  .delete-btn {
-    fill: red;
-    font-size: 25px;
-  }
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem 0;
+  position: absolute;
+  z-index: 9;
+  top: -45px;
+}
+.icon {
+  cursor: pointer;
+}
+.update-btn {
+  fill: var(--highlight-clr);
+  font-size: 25px;
+}
+.delete-btn {
+  fill: red;
+  font-size: 25px;
+}

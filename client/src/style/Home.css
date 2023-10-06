@@ -53,49 +53,19 @@ header {
   background-color: var(--hover-clr);
   color: #333;
 }
-main {
-  margin-top: 10rem;
-}
+
 #movies-container {
   position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 5%;
-  justify-content: flex-start;
+  /* justify-content: space-between; */
 }
 
-.sort-container {
-  position: absolute;
-  top: -45px;
-  right: 8px;
-  display: flex;
-  gap: 1rem;
-}
-.sort-item {
-  background-color: var(--secondary-clr);
-  padding: 0.5rem;
-  border-radius: 20px;
-  width: 4rem;
-  text-align: center;
-}
-.sort-item:hover {
-  cursor: pointer;
-  background-color: var(--highlight-clr);
-  color: black;
-}
-.selected {
-  background-color: var(--hover-clr);
-}
+
 .loading-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-.edit {
-  position: absolute;
-  top: -45px;
-  left: 8px;
-  background-color: var(--highlight-clr);
-  color: black;
 }

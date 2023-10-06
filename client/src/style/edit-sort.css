@@ -1,0 +1,34 @@
+#edit-sort{
+    margin-top: 8rem;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+.edit {
+    background-color: var(--highlight-clr);
+    color: black;
+  }
+  .sort-container {
+    display: flex;
+    gap: 1rem;
+  }
+  .sort-item {
+    background-color: var(--secondary-clr);
+    padding: 0.5rem;
+    border-radius: 20px;
+    width: 4rem;
+    text-align: center;
+  }
+  .sort-item:hover {
+    cursor: pointer;
+    background-color: var(--hover-clr);
+    color: white;
+}
+.selected {
+    background-color: var(--highlight-clr);
+    color: black;
+  }
+  .edit-add{
+    display: flex;
+    gap: 1rem;
+  }
