@@ -1,0 +1,33 @@
+header {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+  }
+  .head-wrapper {
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--secondary-clr);
+    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.75);
+  }
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  .link {
+    text-decoration: none;
+    color: var(--text-clr);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .list-item{
+    list-style-type: none;
+  }
+  .link:hover {
+    background-color: var(--hover-clr);
+    color: #333;
+  }
+  

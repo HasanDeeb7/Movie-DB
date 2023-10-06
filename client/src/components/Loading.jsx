@@ -1,19 +1,20 @@
-import React from 'react'
-import { Oval } from 'react-loader-spinner'
+import React from "react";
+import { Oval, TailSpin } from "react-loader-spinner";
 function Loading() {
   return (
     <span className="loading-container">
-              <Oval
-                ariaLabel="loading-indicator"
-                height={100}
-                width={100}
-                strokeWidth={2000}
-                strokeWidthSecondary={2030}
-                color="var(--highlight-clr)"
-                secondaryColor="var(--secondary-clr)"
-              />
-            </span>
-  )
+      <TailSpin
+        height="80"
+        width="80"
+        color="var(--highlight-clr)"
+        ariaLabel="tail-spin-loading"
+        radius=""
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+      />{" "}
+    </span>
+  );
 }
 
-export default Loading
+export default Loading;
