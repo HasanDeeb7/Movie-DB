@@ -105,3 +105,30 @@
   fill: red;
   font-size: 25px;
 }
+.add-square, .remove-x{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  /* width: 50px; */
+  font-size: 30px;
+  width: fit-content;
+  padding: 0;  
+}
+.add-square > svg{
+  border: 2px solid var(--highlight-clr);
+  fill: var(--highlight-clr);
+  }
+.add-square > svg:hover{
+  cursor: pointer;
+  border-color: white;
+  fill: white;
+  background-color: var(--hover-clr);
+  }
+.remove-x > svg{
+  border: 2px solid red; 
+  fill: red;
+}
+.remove-x > svg:hover{
+  cursor: pointer;
+  
+}

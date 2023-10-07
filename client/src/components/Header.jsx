@@ -15,7 +15,7 @@ function Header(props) {
         <nav>
           <ul className="nav-links">
             <li className="list-item"><Link to='/' className="link">Home</Link></li>
-            <li className="list-item"><Link to='/user' className="link">My Profle</Link></li>
+            <li className="list-item"><Link to='/user' className="link">Watch List</Link></li>
             <li className="list-item"><Link to='/error' className="link"> About</Link></li>
           </ul>
         </nav>

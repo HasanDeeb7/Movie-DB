@@ -8,7 +8,6 @@ function Loading() {
         width="80"
         color="var(--highlight-clr)"
         ariaLabel="tail-spin-loading"
-        radius=""
         wrapperStyle={{}}
         wrapperClass=""
         visible={true}

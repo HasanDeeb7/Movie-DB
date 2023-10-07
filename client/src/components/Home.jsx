@@ -1,16 +1,23 @@
 import { Fragment, useEffect, useState } from "react";
 import "../style/Home.css";
 
-
 import { Movie } from "./MovieCard";
 import { MovieModal } from "./MovieModal";
 import Loading from "./Loading";
 import EditSort from "./EditSort";
-import { Route, Routes } from "react-router-dom";
-
 
 function Home(props) {
-  const {data, sort, setSort, isLoading, setIsLoading} = props
+  const {
+    data,
+    sort,
+    setSort,
+    isLoading,
+    setIsLoading,
+    triggerEffect,
+    effect,
+    fetchData,
+    watchList = null,
+  } = props;
   const [isModalOpen, setIsModalOpen] = useState({
     state: false,
     type: "add",
@@ -22,14 +29,12 @@ function Home(props) {
     message: `Something's Wrong!`,
   });
 
-
-
-  return (
-    isError.state ? isError.message :
+  return isError.state ? (
+    isError.message
+  ) : (
     <>
-  
       <div id="wrapper">
-        <EditSort setIsModalOpen={setIsModalOpen} setSort={setSort}/>
+        <EditSort setIsModalOpen={setIsModalOpen} setSort={setSort} />
         {isModalOpen.state && (
           <MovieModal
             setIsModalOpen={setIsModalOpen}
@@ -52,9 +57,12 @@ function Home(props) {
                     setIsModalOpen={setIsModalOpen}
                     isLoading={isLoading}
                     setIsLoading={setIsLoading}
-                    fetchData={() => {
-                      fetchData();
-                    }}
+                    isInWatchList={
+                      watchList ? watchList.includes(movie._id) : false
+                    }
+                    fetchData={fetchData}
+                    triggerEffect={triggerEffect}
+                    effect={effect}
                   />
                 </Fragment>
               ))
@@ -66,4 +74,4 @@ function Home(props) {
   );
 }
 
-export default Home
+export default Home;
